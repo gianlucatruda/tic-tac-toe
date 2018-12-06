@@ -1,0 +1,35 @@
+body {
+    font-family: "SF Pro Text","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+    color: #333;
+    background-color: #fafafa;
+
+}
+
+.header, .board, .options {
+    text-align: center;
+    margin: 5px auto;
+}
+
+.options {
+    margin-top: 20px;
+}
+
+button {
+    font-size: 2rem;
+    margin: 20px;
+}
+
+.column {
+    margin: 0 auto;
+    display: inline-block;
+}
+
+.cell {
+    background-color: #c3c3c3;
+    border: 1px solid grey;
+    margin-bottom: 2px;
+    width: 70px;
+    height: 70px;
+    font-size: 2rem;
+}
+

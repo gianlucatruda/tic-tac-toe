@@ -1,0 +1,44 @@
+<doctype=<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Minimal Tic-Tac-Toe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+    <div class="header">
+        <h1>Minimal</h1>
+        <h2>Tic-Tac-Toe</h2>
+    </div>
+    <div class="board">
+        <div class="column">
+            <div class="cell">1</div>
+            <div class="cell">2</div>
+            <div class="cell">3</div>
+        </div>
+        <div class="column">
+            <div class="cell">4</div>
+            <div class="cell">5</div>
+            <div class="cell">6</div>
+        </div>
+        <div class="column">
+            <div class="cell">7</div>
+            <div class="cell">8</div>
+            <div class="cell">9</div>
+        </div>
+    </div>
+    <div class="options">
+        <button class="newgame">New Game</button>
+        <button class="loadgame">Load Game</button>
+    </div>
+    <div class="info">
+        <p>Game Id: {{gameid}}</p>
+    </div>
+</body>
+
+<script src="{{ url_for('static', filename='logic.js') }}"></script>
+
+</html>
