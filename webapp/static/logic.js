@@ -1,4 +1,10 @@
+var cells = document.getElementsByClassName("cell");
+var GAMEOVER = false;
+var GAME = 0; // The current game id (hardcoded for demo purposes)
+var PIECE = 'o'; // The player's piece
+
 function clearBoard() {
+    // Clears the game cells
     var cells = document.getElementsByClassName("cell");
     for (let i=0; i<cells.length; i++) {
         cells[i].innerHTML = ".";
@@ -7,12 +13,15 @@ function clearBoard() {
 }
 
 function newGame() {
+    // Starts a new game and clears board
     clearBoard();
     document.getElementsByClassName("min-header")[0].innerHTML = "Minimal";
     GAMEOVER = false;
+    // TODO: Trigger API to create new game
 }
 
 function endGame(winner, triple) {
+    // Triggers the end-of-game sequence to show winner and winning triple
     triple.forEach(element => {
         document.getElementsByClassName("cell")[element-1].innerHTML = "<b>"+winner+"</b>";
     });
@@ -21,6 +30,7 @@ function endGame(winner, triple) {
 }
 
 function opponentPlay(cells, id, game, piece) {
+    // Generates a random AI move for the opponent
     var hasMoved = false;
     while (!hasMoved){
         var pos = Math.floor(Math.random()*8);
@@ -32,6 +42,7 @@ function opponentPlay(cells, id, game, piece) {
 }
 
 function postData(url, data) {
+    // PUT request to the API to update game data
     return fetch(url, {
         method: "PUT",
         body: JSON.stringify(data),
@@ -44,6 +55,7 @@ function postData(url, data) {
 }
 
 function placePiece(cells, id, game, piece) {
+    // Places single o in given cell and notifies API
     if (cells[id].innerHTML == "." && !GAMEOVER){
         fetch('http://127.0.0.1:8001/game/' + game)
             .then(function (response) {
@@ -58,6 +70,7 @@ function placePiece(cells, id, game, piece) {
                     data => console.log(JSON.stringify(data))
                 ).catch(error => console.error(error));
                 cells[id].innerHTML = piece;
+                // Check if the game is over, else let AI play
                 if (!checkForWin(cells)) {
                     opponentPlay(cells, id, game, piece);
                     checkForWin(cells);
@@ -65,22 +78,20 @@ function placePiece(cells, id, game, piece) {
 
             });
     }
-
 }
 
 function checkForWin(cells) {
+    // Checks whether any of the linear triples are all alike
     winStates = ['123', '456', '789',
                  '147', '258', '369',
                  '159', '357']
-
     for (let i = 0; i < winStates.length; i++) {
         var triple = winStates[i].split("");
-        // console.log("Check", i, triple);
         var values = []
         for (let j = 0; j < triple.length; j++) {
             values.push(cells[parseInt(triple[j])-1].innerHTML)
         }
-        // console.log(values);
+        // Checks if all in triple are the same and not '.' placeholder
         if (!values.includes('.') && values.every((val, i, arr) => val === arr[0])){
             endGame(values[0], triple);
             return true
@@ -91,14 +102,8 @@ function checkForWin(cells) {
 
 }
 
-
 var newGameButton = document.getElementsByClassName("newgame")[0];
 newGameButton.addEventListener("click", newGame);
-
-var cells = document.getElementsByClassName("cell");
-var GAMEOVER = false;
-var GAME = 0;
-var PIECE = 'o';
 
 // EventListeners don't play nicely with loops :(
 cells[0].addEventListener("click", function(){placePiece(cells, 0, GAME, PIECE)});
