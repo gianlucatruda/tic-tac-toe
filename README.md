@@ -1,5 +1,5 @@
 # Minimal Tic-Tac-Toe
-A Python-JavaScript hybrid web game
+A Python-JavaScript hybrid web app and RESTful API built with Python, Flask, JavaScript, and SQLite3.
 
 <img src="demo.gif" width="300"/>
 
@@ -7,7 +7,7 @@ A Python-JavaScript hybrid web game
 
 This pair of microservices work together to provide a web game and supporting API.
 
-* The ```/api/``` directory contains the Python 3 code for a RESTful API. This interfaces with a very simple SQLite database stored under the ```/db/``` directory. 
+* The ```/api/``` directory contains the Python 3 code for a RESTful API. This interfaces with a very simple **SQLite** database stored under the ```/db/``` directory. 
 * The ```/webapp/``` directory holds another Flask server built with Python 3, but in this case it both serves the web page (HTML, CSS, and JavaScript 6) as well as interfaces with the API using the Requests package.
 
 ### API 
@@ -20,7 +20,7 @@ where the ```<game_id>``` is some integer corresponding to a game stored in the 
 
 ```{"games": [[<game_id>, <game_state>]]}```
 
-where ```<game_state>``` is simply a 9-digit string of `.`, `x`, and `o` characters representing the board layout in **column-major** order. This is simpler and easier to implement than maintaining 9 different fields (one for each cell), but would require extensive error-checking before full deployment.
+where ```<game_state>``` is simply a 9-digit string of `.`, `x`, and `o` characters representing the board layout in [column-major](https://en.wikipedia.org/wiki/Row-_and_column-major_order) order. This is simpler and easier to implement than maintaining 9 different fields (one for each cell), but would require extensive error-checking before full deployment.
 
 ### Web Server
 
@@ -41,7 +41,7 @@ The basic logic of the game runs in a single JavaScript ES6 file that:
 * Resets the board and creates a new game when the user clicks 'New Game' 
 
 ## Installation
-First, ensure you have Python 3.6+, pip, and pipenv installed.
+First, ensure you have [Python 3.6+](https://www.python.org/downloads/), [pip](https://pip.pypa.io/en/stable/installing/), and [pipenv](https://pipenv.readthedocs.io/en/latest/) installed.
 
 Clone the repo and cd into the directory
 
@@ -78,7 +78,7 @@ python webapp/server.py
 
 The API should now be accessible from your localhost (127.0.0.1) on port 8001. You can now use the web app by visiting ```http://127.0.0.1/8002/game/0```
 
-Take note of the Game Id at the bottom of the page. You can resume a game mid-way (or see how the game ended) by visiting ```http://127.0.0.1/8002/game/<game id>``` later
+Take note of the Game Id at the bottom of the page. You can resume a game mid-way (or see how the game ended) by visiting ```http://127.0.0.1/8002/game/<game id>``` later.
 
 
 ## Limitations
@@ -88,3 +88,7 @@ This project is a mostly-complete demonstration only. There are a few critical l
 * Flask's development servers are not suitable for deployment and are used here merely for demonstration.
 * In deployment, the ```<game_id>``` would be cryptographic hash keys instead of integers. This would prevent users from accessing other games via gaming the URL scheme.
 * Writing the game across JS and Flask web servers is not the ideal architecture. The API is easily and efficiently made with Python and Flask, but the core game could be totally separate and built with responsive web frameworks. I focussed more on Python development as that fits the role I am applying for.
+* Due to limited time, there are some known bugs and blissful omissions:
+	* New games don't trigger the API yet, but supporting code exists to add this
+	* PUT requests from ```logic.js``` don't properly interface with the API, but the supporting code is all there
+	* Wins for x and o are detected fine, but a (very-unlikely) draw causes a bug that (I think) creates an infinite loop.  
